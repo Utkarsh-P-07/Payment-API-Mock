@@ -9,11 +9,11 @@ project:
 
 environment:
   variables:
-    STRIPE_SECRET_KEY: "sk_test_xxxxxxxxxxxxx"
+    STRIPE_SECRET_KEY: "sk_test_xxxxxxxxxxxxx" # optional in mock mode
     STRIPE_WEBHOOK_SECRET: "whsec_xxxxxxxxxxxxx"
+    STRIPE_MODE: one_of [mock, live] (default mock)
   files:
-    - .env
-    - .env.example
+    - .env (copy from .env.example and override as needed)
 
 commands:
   setup:
