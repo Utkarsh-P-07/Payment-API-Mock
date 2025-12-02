@@ -1,0 +1,79 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.so
+
+# Byte compiled
+*.pyc
+*.pyo
+*.pyd
+
+# =========================
+# Virtual Environment
+# =========================
+venv/
+env/
+ENV/
+
+# =========================
+# FastAPI / Uvicorn / Build Artifacts
+# =========================
+*.log
+*.db
+instance/
+build/
+dist/
+*.egg-info/
+*.sqlite
+*.sqlite3
+
+# =========================
+# Pytest
+# =========================
+.pytest_cache/
+.cache/
+
+# =========================
+# MyPy / Type Checking
+# =========================
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# =========================
+# Environment Variables
+# =========================
+.env
+.env.*  
+!.env.example
+
+# =========================
+# VS Code
+# =========================
+.vscode/
+*.code-workspace
+
+# =========================
+# IDE / Editors
+# =========================
+.idea/
+*.iml
+
+# =========================
+# Mac / Windows Noise
+# =========================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# =========================
+# OneDrive sync junk
+# =========================
+~$*
+*.tmp
