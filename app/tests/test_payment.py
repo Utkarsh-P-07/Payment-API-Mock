@@ -1,6 +1,8 @@
 import pytest
-from httpx import AsyncClient, ASGITransport
+from httpx import ASGITransport, AsyncClient
+
 from app.main import app
+from app.services.mongo_service import MongoService
 
 
 @pytest.mark.asyncio
@@ -14,3 +16,8 @@ async def test_create_payment_intent(mock_stripe_payment_intent_create):
 
     assert resp.status_code == 200
     assert "client_secret" in resp.json()
+
+    doc = MongoService.payment_intents_collection().find_one({})
+    assert doc is not None
+    assert doc["amount"] == payload["amount"]
+    assert doc["currency"] == payload["currency"]
