@@ -16,6 +16,16 @@ def _mock_refund_id() -> str:
     return f"re_{uuid.uuid4().hex}"
 
 
+def _mock_payment_intent(amount: int, currency: str) -> SimpleNamespace:
+    return SimpleNamespace(
+        id=f"pi_{uuid.uuid4().hex}",
+        client_secret=_mock_client_secret(),
+        amount=amount,
+        currency=currency,
+        status="requires_payment_method"
+    )
+
+
 class StripeService:
 
     @staticmethod
@@ -30,7 +40,7 @@ class StripeService:
 
         if is_mock_mode():
             logger.debug("StripeService running in mock mode for PaymentIntent.")
-            return SimpleNamespace(client_secret=_mock_client_secret())
+            return _mock_payment_intent(amount, currency)
 
         StripeService._ensure_live_key()
         return stripe.PaymentIntent.create(
