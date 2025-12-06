@@ -36,7 +36,7 @@ A production-ready, mock FinTech payment service built with FastAPI that seamles
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/Utkarsh-P-07/Payment-API-Mock.git
 cd Payment-API-Mock
 ```
 
@@ -432,3 +432,4 @@ For issues, questions, or contributions, please open an issue on the GitHub repo
 ---
 
 **Built with ❤️ using FastAPI and Stripe**
+
