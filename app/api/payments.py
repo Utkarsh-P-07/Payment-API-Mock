@@ -47,6 +47,9 @@ def create_intent(payload: PaymentIntentRequest):
 
         return {"client_secret": client_secret}
 
+    except HTTPException:
+        # Re-raise HTTPException to let FastAPI handle it
+        raise
     except stripe.error.StripeError as e:
         raise HTTPException(status_code=400, detail=f"Stripe error: {str(e)}")
     except ConnectionError as e:

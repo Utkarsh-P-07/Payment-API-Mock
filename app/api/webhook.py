@@ -30,10 +30,15 @@ async def stripe_webhook(request: Request):
 
     try:
         event = stripe.Webhook.construct_event(payload, sig_header, STRIPE_WEBHOOK_SECRET)
+    except HTTPException:
+        # Re-raise HTTPException to let FastAPI handle it
+        raise
     except ValueError as e:
         raise HTTPException(status_code=400, detail=f"Invalid signature: {str(e)}")
     except stripe.error.SignatureVerificationError as e:
         raise HTTPException(status_code=400, detail=f"Invalid signature: {str(e)}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Webhook processing failed: {str(e)}")
 
     # Safely access event type
     event_type = event.get("type") if isinstance(event, dict) else getattr(event, "type", "unknown")

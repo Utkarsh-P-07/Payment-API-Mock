@@ -2,6 +2,7 @@ import uuid
 import stripe
 from types import SimpleNamespace
 from app.config import STRIPE_SECRET_KEY, is_mock_mode
+from app.services.mongo_service import MongoService
 
 def _mock_intent(amount, currency):
     return SimpleNamespace(
@@ -34,6 +35,10 @@ class StripeService:
     @staticmethod
     def refund_payment(payment_intent_id, reason):
         if is_mock_mode():
+            # In mock mode, validate that the payment intent exists in the database
+            payment_intent = MongoService.get_payment_intent(payment_intent_id)
+            if not payment_intent:
+                raise ValueError(f"Payment intent {payment_intent_id} not found")
             return _mock_refund()
 
         if not STRIPE_SECRET_KEY:

@@ -32,6 +32,11 @@ def refund(payload: RefundRequest):
             "status": refund_status,
             "payment_intent_id": payload.payment_intent_id
         }
+    except HTTPException:
+        # Re-raise HTTPException to let FastAPI handle it
+        raise
+    except ConnectionError as e:
+        raise HTTPException(status_code=503, detail=f"Database error: {str(e)}")
     except stripe.error.StripeError as e:
         raise HTTPException(status_code=400, detail=f"Stripe error: {str(e)}")
     except ValueError as e:

@@ -34,4 +34,20 @@ class MongoService:
 
     @classmethod
     def record_payment_intent(cls, data):
-        return cls.payment_intents_collection().insert_one(data).inserted_id
+        """Record a payment intent to the database. Raises ConnectionError on database failures."""
+        try:
+            return cls.payment_intents_collection().insert_one(data).inserted_id
+        except (ConnectionFailure, ServerSelectionTimeoutError) as e:
+            raise ConnectionError(f"Database connection error: {str(e)}")
+        except PyMongoError as e:
+            raise ConnectionError(f"Database error while recording payment intent: {str(e)}")
+
+    @classmethod
+    def get_payment_intent(cls, payment_intent_id):
+        """Retrieve a payment intent by ID. Returns None if not found."""
+        try:
+            return cls.payment_intents_collection().find_one({"payment_intent_id": payment_intent_id})
+        except (ConnectionFailure, ServerSelectionTimeoutError) as e:
+            raise ConnectionError(f"Database connection error: {str(e)}")
+        except PyMongoError as e:
+            raise ConnectionError(f"Database error while retrieving payment intent: {str(e)}")

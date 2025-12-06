@@ -6,11 +6,16 @@ load_dotenv()
 def _env_bool(value: str | None, default: bool = False) -> bool:
     if value is None:
         return default
+    # Handle empty string as False
+    if not value:
+        return False
     return value.lower() in {"1", "true", "yes", "on"}
 
 STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
 STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
-STRIPE_MODE = os.getenv("STRIPE_MODE", "mock").lower()
+# Normalize STRIPE_MODE: empty string or invalid values default to "mock"
+_stripe_mode_raw = os.getenv("STRIPE_MODE", "mock").lower().strip()
+STRIPE_MODE = _stripe_mode_raw if _stripe_mode_raw else "mock"
 
 MONGODB_URI = os.getenv("MONGODB_URI")
 MONGODB_DB_NAME = os.getenv("MONGODB_DB_NAME", "payment_api")
