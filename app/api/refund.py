@@ -7,13 +7,7 @@ router = APIRouter(prefix="/refund", tags=["Refund"])
 
 @router.post("")
 def refund(payload: RefundRequest):
-    # Validate payment_intent_id format (Stripe payment intent IDs start with 'pi_')
-    if not payload.payment_intent_id or not payload.payment_intent_id.startswith("pi_"):
-        raise HTTPException(
-            status_code=400, 
-            detail="Invalid payment_intent_id format. Must start with 'pi_'"
-        )
-    
+    # Validation is now handled by Pydantic schema
     try:
         refund_result = StripeService.refund_payment(
             payment_intent_id=payload.payment_intent_id,
@@ -40,6 +34,10 @@ def refund(payload: RefundRequest):
     except stripe.error.StripeError as e:
         raise HTTPException(status_code=400, detail=f"Stripe error: {str(e)}")
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        # Check if it's a "not found" error
+        error_msg = str(e)
+        if "not found" in error_msg.lower():
+            raise HTTPException(status_code=404, detail=error_msg)
+        raise HTTPException(status_code=400, detail=error_msg)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Refund failed: {str(e)}")
