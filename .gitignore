@@ -37,6 +37,8 @@ dist/
 # =========================
 .pytest_cache/
 .cache/
+.tox/
+.nox/
 
 # =========================
 # MyPy / Type Checking
@@ -49,7 +51,7 @@ dmypy.json
 # Environment Variables
 # =========================
 .env
-.env.*  
+.env.*
 !.env.example
 
 # =========================
@@ -77,3 +79,26 @@ desktop.ini
 # =========================
 ~$*
 *.tmp
+
+# =========================
+# Coverage Reports
+# =========================
+.coverage
+.coverage.*
+htmlcov/
+*.cover
+.hypothesis/
+
+# =========================
+# Jupyter Notebooks
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# Linting / Formatting
+# =========================
+.ruff_cache/
+.pylint.d/
+*.swp
+*.swo
+*~
