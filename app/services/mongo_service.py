@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from pymongo.errors import ConfigurationError, ConnectionFailure, ServerSelectionTimeoutError, PyMongoError
 from app.config import MONGODB_URI, MONGODB_DB_NAME, USE_MOCK_DB
 
 class MongoService:
@@ -13,7 +14,14 @@ class MongoService:
                 cls._client = mongomock.MongoClient()
             else:
                 # Use real MongoDB connection
-                cls._client = MongoClient(MONGODB_URI)
+                try:
+                    cls._client = MongoClient(MONGODB_URI, serverSelectionTimeoutMS=5000)
+                    # Test the connection
+                    cls._client.admin.command('ping')
+                except (ConfigurationError, ConnectionFailure, ServerSelectionTimeoutError) as e:
+                    raise ConnectionError(f"Failed to connect to MongoDB: {str(e)}")
+                except PyMongoError as e:
+                    raise ConnectionError(f"MongoDB error: {str(e)}")
         return cls._client
 
     @classmethod
