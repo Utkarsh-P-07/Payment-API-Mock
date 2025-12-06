@@ -5,7 +5,7 @@ from app.services.mongo_service import MongoService
 
 @pytest.mark.asyncio
 async def test_create_payment_intent(mock_stripe_payment_intent_create):
-    payload = {"amount": 1000, "currency": "usd"}
+    payload = {"amount": 1000, "currency": "usd", "payer_name": "Test User"}
     transport = ASGITransport(app=app)
 
     async with AsyncClient(transport=transport, base_url="http://test") as ac:
