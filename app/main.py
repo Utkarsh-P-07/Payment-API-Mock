@@ -1,5 +1,4 @@
 import base64
-
 from fastapi import FastAPI
 from fastapi.responses import Response
 
@@ -16,11 +15,9 @@ _FAVICON_PNG = base64.b64decode(
     "PvWSWQAAAABJRU5ErkJggg=="
 )
 
-
 @app.get("/")
 def root():
     return {"message": "Payment API Mock Running"}
-
 
 @app.get("/favicon.ico", include_in_schema=False)
 def favicon():
