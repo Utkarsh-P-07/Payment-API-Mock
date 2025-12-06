@@ -1,15 +1,12 @@
 import pytest
 from unittest.mock import MagicMock, patch
-
 from app.services.mongo_service import MongoService
-
 
 @pytest.fixture(autouse=True)
 def reset_mongo():
-    MongoService.drop_mock_database()
+    MongoService._client = None  # reset connection
     yield
-    MongoService.drop_mock_database()
-
+    MongoService._client = None
 
 @pytest.fixture
 def mock_stripe_payment_intent_create():

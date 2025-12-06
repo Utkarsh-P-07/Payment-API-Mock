@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
 
 class PaymentIntentRequest(BaseModel):
-    amount: int = Field(..., gt=0, description="Amount in cents")
+    amount: int = Field(..., gt=0)
     currency: str = "usd"
